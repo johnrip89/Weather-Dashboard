@@ -1,12 +1,4 @@
 var searchBtn = document.querySelector("#search-button");
-var austinBtn = document.querySelector("#austin-button");
-var chicagoBtn = document.querySelector("#chicago-button");
-var nyBtn = document.querySelector("#ny-button");
-var orlandoBtn = document.querySelector("#orlando-button");
-var sfBtn = document.querySelector("#sf-button");
-var seattleBtn = document.querySelector("#seattle-button");
-var denverBtn = document.querySelector("#denver-button");
-var atlantaBtn = document.querySelector("#atlanta-button");
 
 var cityInput = document.querySelector("#city-input");
 
@@ -16,6 +8,8 @@ var day2 = document.querySelector("#day2");
 var day3 = document.querySelector("#day3");
 var day4 = document.querySelector("#day4");
 var day5 = document.querySelector("#day5");
+
+var weather = [];
 
 var displayInfo = function (weatherInfo) {
     currentTemp.textContent = "";
@@ -27,15 +21,15 @@ var displayInfo = function (weatherInfo) {
 
     var date = moment().format(" L");
     var todayP = document.createElement("p");
-    todayP.textContent = weatherInfo.name + date;    
-    var todayTemp = document.createElement("p");    
+    todayP.textContent = weatherInfo.name + date;
+    var todayTemp = document.createElement("p");
     todayTemp.textContent = "temp: " + Math.round((weatherInfo.main.temp - 273.15) * 1.80 + 32);
     var todayWind = document.createElement("p");
     todayWind.textContent = "wind: " + weatherInfo.wind.speed + " mph";
     var todayHumidity = document.createElement("p");
     todayHumidity.textContent = "humidity: " + weatherInfo.main.humidity + "%";
 
-    currentTemp.appendChild(todayP);    
+    currentTemp.appendChild(todayP);
     currentTemp.appendChild(todayTemp);
     currentTemp.appendChild(todayWind);
     currentTemp.appendChild(todayHumidity);
@@ -49,10 +43,10 @@ var displayInfo = function (weatherInfo) {
         if (response.ok) {
             return response.json().then(function (data) {
                 console.log(data);
-                
+
                 var date1 = moment().add(1, 'days').format(' L');
                 var day1p = document.createElement("h3");
-                day1p.textContent = date1;                
+                day1p.textContent = date1;
                 var day1iconID = data.daily[0].weather[0].icon;
                 var day1iconUrl = "http://openweathermap.org/img/w/" + day1iconID + ".png";
                 var day1icon = document.createElement("img");
@@ -62,8 +56,8 @@ var displayInfo = function (weatherInfo) {
                 var day1wind = document.createElement("p");
                 day1wind.textContent = "wind: " + data.daily[0].wind_speed + " mph";
                 var day1humidity = document.createElement("p");
-                day1humidity.textContent = "humidity: " + data.daily[0].humidity + "%";   
-                
+                day1humidity.textContent = "humidity: " + data.daily[0].humidity + "%";
+
                 var date2 = moment().add(2, 'days').format(' L');
                 var day2p = document.createElement("h3");
                 day2p.textContent = date2;
@@ -156,8 +150,6 @@ var displayInfo = function (weatherInfo) {
     })
 };
 
-
-
 var searchCity = function (event) {
     event.preventDefault();
 
@@ -171,13 +163,18 @@ var searchCity = function (event) {
         if (response.ok) {
             return response.json().then(function (data) {
                 console.log(data);
+                weather.push(city);
+                saveCity();
                 displayInfo(data);
             });
         } else {
-            alert("Error: GitHub User Not Found");
+            alert("Error: City Not Found");
         }
-    })
+    })    
 };
 
+function saveCity() {
+    localStorage.setItem("Cities", JSON.stringify(weather));
+}
 
 searchBtn.addEventListener("click", searchCity);
