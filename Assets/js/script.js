@@ -1,4 +1,8 @@
+var weather = [];
+
 var searchBtn = document.querySelector("#search-button");
+var recentCitySearches = document.querySelector("#recent-city");
+var recentCityBtns = document.querySelector(".recent-city-btns");
 
 var cityInput = document.querySelector("#city-input");
 
@@ -9,7 +13,7 @@ var day3 = document.querySelector("#day3");
 var day4 = document.querySelector("#day4");
 var day5 = document.querySelector("#day5");
 
-var weather = [];
+
 
 var displayInfo = function (weatherInfo) {
     currentTemp.textContent = "";
@@ -165,16 +169,61 @@ var searchCity = function (event) {
                 console.log(data);
                 weather.push(city);
                 saveCity();
+
                 displayInfo(data);
             });
         } else {
             alert("Error: City Not Found");
         }
-    })    
+    })
 };
 
 function saveCity() {
     localStorage.setItem("Cities", JSON.stringify(weather));
 }
 
+function recentSearches() {
+    var recentCity = JSON.parse(window.localStorage.getItem("Cities"));
+
+    if (!recentCity) {
+        return;
+    } else {
+        recentCity.forEach(function (value) {
+            var button = document.createElement("button")
+
+            console.log(value)
+
+            button.textContent = value;            
+            button.setAttribute("type", "submit")
+
+            recentCitySearches.appendChild(button)
+
+        })
+    }
+}
+
+function recentCitySearch (event) { 
+    console.log(event)  
+    var city = event.target.outerText;    
+
+    if (!city) {
+        return;
+    } else {
+        var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=59d6703a70d5726f61b38f75473f676e";
+        fetch(apiUrl).then(function (response) {
+            if (response.ok) {
+                return response.json().then(function (data) {
+                    console.log(data);                                         
+                    displayInfo(data);
+                });
+            } else {
+                alert("Error: City Not Found");
+            }
+        })        
+    }
+}
+
+recentSearches();
+
+recentCitySearches.addEventListener("click", recentCitySearch);
 searchBtn.addEventListener("click", searchCity);
