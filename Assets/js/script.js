@@ -1,4 +1,4 @@
-var weather = [];
+var weather = window.localStorage.getItem("Cities") || [];
 
 var searchBtn = document.querySelector("#search-button");
 var recentCitySearches = document.querySelector("#recent-city");
@@ -167,10 +167,14 @@ var searchCity = function (event) {
         if (response.ok) {
             return response.json().then(function (data) {
                 console.log(data);
-                weather.push(city);
-                saveCity();
-
+                var weather =JSON.parse(window.localStorage.getItem("Cities")) || [];
+                if (!weather.includes(city)) {
+                    weather.push(city);
+                    saveCity(weather);
+                }                
+                
                 displayInfo(data);
+                recentSearches();
             });
         } else {
             alert("Error: City Not Found");
@@ -178,12 +182,14 @@ var searchCity = function (event) {
     })
 };
 
-function saveCity() {
-    localStorage.setItem("Cities", JSON.stringify(weather));
+function saveCity(weather) {
+    localStorage.setItem("Cities", JSON.stringify(weather));    
 }
 
 function recentSearches() {
     var recentCity = JSON.parse(window.localStorage.getItem("Cities"));
+
+    recentCitySearches.innerHTML = '';
 
     if (!recentCity) {
         return;
@@ -204,7 +210,7 @@ function recentSearches() {
 
 function recentCitySearch (event) { 
     console.log(event)  
-    var city = event.target.outerText;    
+    var city = event.target.outerText; 
 
     if (!city) {
         return;
