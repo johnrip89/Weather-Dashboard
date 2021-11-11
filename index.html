@@ -23,31 +23,32 @@
                     <div class="row">
                         <div class="card">
                             <div class="card-body">
-                                <h2>Search for a City:</h2>
+                                <h3>Search for a City:</h3>
                                 <form>
-                                    <input id="city-input" name="San Diego" type="text">
+                                    <input id="city-input" placeholder="Enter a city" type="text">
                                     <button id="search-button">Search</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="recent-city">                        
+                    Recent searches:
+                    <div class="row" id="recent-city">                                          
                     </div>
                     
                 </div>
             </div>
 
             <div class="container col-9">
-                <div id="current-temp" class="row card bg-info border-dark">                    
+                <div id="current-temp" class="row card border-dark">                    
                 </div>
 
                 <h3>5-Day Forecast:</h3>
-                <div class="row">                    
-                    <div id="day1" class="card mr-2 bg-secondary border-dark"></div>
-                    <div id="day2" class="card mr-2 bg-secondary border-dark"></div>
-                    <div id="day3" class="card mr-2 bg-secondary border-dark"></div>
-                    <div id="day4" class="card mr-2 bg-secondary border-dark"></div>
-                    <div id="day5" class="card mr-2 bg-secondary border-dark"></div>
+                <div class="row">                   
+                    <div id="day1" class="days col card mr-2 bg-success border-dark"></div>
+                    <div id="day2" class="days col card mr-2 bg-success border-dark"></div>
+                    <div id="day3" class="days col card mr-2 bg-success border-dark"></div>
+                    <div id="day4" class="days col card mr-2 bg-success border-dark"></div>
+                    <div id="day5" class="days col card mr-2 bg-success border-dark"></div>
                 </div>
             </div>
         </div>

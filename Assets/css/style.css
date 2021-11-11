@@ -1,9 +1,16 @@
 header {
-    background-color: skyblue;  
+    background: linear-gradient(black, skyblue);;  
     text-align: center; 
     padding: 2px;
     height: 70px;
     color: white;
+}
+
+#current-temp {
+    background: linear-gradient(skyblue, black);
+    border: 0;
+    color: white;
+    align-items: center;
 }
 
 input {
@@ -19,4 +26,9 @@ input {
 .quick-search-button {
     width: 100%;
     margin: 5px;   
+}
+
+.recent-city-btn {
+    width: 100%;
+    background: rgb(88, 86, 81);
 }

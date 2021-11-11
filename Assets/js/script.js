@@ -16,6 +16,8 @@ var day5 = document.querySelector("#day5");
 
 
 var displayInfo = function (weatherInfo) {
+    console.log(weatherInfo);
+
     currentTemp.textContent = "";
     day1.textContent = "";
     day2.textContent = "";
@@ -24,13 +26,13 @@ var displayInfo = function (weatherInfo) {
     day5.textContent = "";
 
     var date = moment().format(" L");
-    var todayP = document.createElement("p");
+    var todayP = document.createElement("h5");
     todayP.textContent = weatherInfo.name + date;
-    var todayTemp = document.createElement("p");
+    var todayTemp = document.createElement("h5");
     todayTemp.textContent = "temp: " + Math.round((weatherInfo.main.temp - 273.15) * 1.80 + 32);
-    var todayWind = document.createElement("p");
+    var todayWind = document.createElement("h5");
     todayWind.textContent = "wind: " + weatherInfo.wind.speed + " mph";
-    var todayHumidity = document.createElement("p");
+    var todayHumidity = document.createElement("h5");
     todayHumidity.textContent = "humidity: " + weatherInfo.main.humidity + "%";
 
     currentTemp.appendChild(todayP);
@@ -48,8 +50,13 @@ var displayInfo = function (weatherInfo) {
             return response.json().then(function (data) {
                 console.log(data);
 
+                var uvIndex = document.createElement("h5");
+                uvIndex.textContent = "UV Index: " + data.daily[0].uvi;
+                
+                currentTemp.appendChild(uvIndex);
+
                 var date1 = moment().add(1, 'days').format(' L');
-                var day1p = document.createElement("h3");
+                var day1p = document.createElement("h4");
                 day1p.textContent = date1;
                 var day1iconID = data.daily[0].weather[0].icon;
                 var day1iconUrl = "http://openweathermap.org/img/w/" + day1iconID + ".png";
@@ -63,7 +70,7 @@ var displayInfo = function (weatherInfo) {
                 day1humidity.textContent = "humidity: " + data.daily[0].humidity + "%";
 
                 var date2 = moment().add(2, 'days').format(' L');
-                var day2p = document.createElement("h3");
+                var day2p = document.createElement("h4");
                 day2p.textContent = date2;
                 var day2iconID = data.daily[1].weather[0].icon;
                 var day2iconUrl = "http://openweathermap.org/img/w/" + day2iconID + ".png";
@@ -77,7 +84,7 @@ var displayInfo = function (weatherInfo) {
                 day2humidity.textContent = "humidity: " + data.daily[1].humidity + "%";
 
                 var date3 = moment().add(3, 'days').format(' L');
-                var day3p = document.createElement("h3");
+                var day3p = document.createElement("h4");
                 day3p.textContent = date3;
                 var day3iconID = data.daily[2].weather[0].icon;
                 var day3iconUrl = "http://openweathermap.org/img/w/" + day3iconID + ".png";
@@ -91,7 +98,7 @@ var displayInfo = function (weatherInfo) {
                 day3humidity.textContent = "humidity: " + data.daily[2].humidity + "%";
 
                 var date4 = moment().add(4, 'days').format(' L');
-                var day4p = document.createElement("h3");
+                var day4p = document.createElement("h4");
                 day4p.textContent = date4;
                 var day4iconID = data.daily[3].weather[0].icon;
                 var day4iconUrl = "http://openweathermap.org/img/w/" + day4iconID + ".png";
@@ -105,7 +112,7 @@ var displayInfo = function (weatherInfo) {
                 day4humidity.textContent = "humidity: " + data.daily[3].humidity + "%";
 
                 var date5 = moment().add(5, 'days').format(' L');
-                var day5p = document.createElement("h3");
+                var day5p = document.createElement("h4");
                 day5p.textContent = date5;
                 var day5iconID = data.daily[4].weather[0].icon;
                 var day5iconUrl = "http://openweathermap.org/img/w/" + day5iconID + ".png";
@@ -147,6 +154,17 @@ var displayInfo = function (weatherInfo) {
                 day5.appendChild(day5temp);
                 day5.appendChild(day5wind);
                 day5.appendChild(day5humidity);
+
+                console.log(data.daily[0].uvi)
+
+                if (data.daily[0].uvi <= 2) {
+                    uvIndex.classList.add("bg-primary");
+            
+                } else if (data.daily[0].uvi <= 5) {
+                    uvIndex.classList.add("bg-warning");
+            
+                } else if (data.daily[0].uvi <= 11)
+                    uvIndex.classList.add("bg-danger");
             });
         } else {
             alert("Error: GitHub User Not Found");
@@ -195,14 +213,19 @@ function recentSearches() {
         return;
     } else {
         recentCity.forEach(function (value) {
-            var button = document.createElement("button")
+            var btnDiv = document.createElement("div");
+            var button = document.createElement("button");
 
-            console.log(value)
+            btnDiv.classList.add("col-12", "mt-2")
+            button.classList.add("recent-city-btn")
+
+            console.log(value);
 
             button.textContent = value;            
-            button.setAttribute("type", "submit")
+            button.setAttribute("type", "submit");
 
-            recentCitySearches.appendChild(button)
+            recentCitySearches.appendChild(btnDiv);
+            btnDiv.appendChild(button);
 
         })
     }
